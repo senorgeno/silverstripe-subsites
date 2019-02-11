@@ -562,7 +562,7 @@ class Subsite extends DataObject
 
         if (!$file) {
             $subsitesPath = ModuleLoader::getModule('silverstripe/subsites')->getRelativePath();
-            $file = Director::baseFolder() . $subsitesPath . '/host-map.php';
+            $file = Director::baseFolder() . DIRECTORY_SEPARATOR . $subsitesPath . '/host-map.php';
         }
         $hostmap = [];
 
