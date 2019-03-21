@@ -4,6 +4,7 @@ namespace SilverStripe\Subsites\Model;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
+use SilverStripe\Core\Environment;
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\OptionsetField;
@@ -185,7 +186,7 @@ class SubsiteDomain extends DataObject
      */
     public function getSubstitutedDomain()
     {
-        $currentHost = $_SERVER['HTTP_HOST'];
+        $currentHost = $_SERVER['HTTP_HOST'] ?? Environment::getEnv('SS_BASE_HOST');
 
         // If there are wildcards in the primary domain (not recommended), make some
         // educated guesses about what to replace them with:
