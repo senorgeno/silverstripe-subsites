@@ -521,8 +521,16 @@ class SiteTreeSubsites extends DataExtension
         $prevForceSubsite = Subsite::$force_subsite;
         Subsite::$force_subsite = $this->owner->SubsiteID;
 
-        // Repeat validation in the correct subsite
-        $isValid = $this->owner->validURLSegment();
+        $source = SiteTree::get()->filter('URLSegment', $this->getOwner()->URLSegment)->filter('SubsiteID', $this->owner->SubsiteID);
+        if ($this->getOwner()->ID) {
+            $source = $source->exclude('ID', $this->getOwner()->ID);
+        }
+        if (SiteTree::config()->get('nested_urls')) {
+            $source = $source->filter('ParentID', $this->getOwner()->ParentID ? $this->getOwner()->ParentID : 0);
+        }
+
+        // Validate
+        $isValid = !$source->exists();
 
         // Restore
         Subsite::$force_subsite = $prevForceSubsite;
